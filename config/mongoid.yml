@@ -1,0 +1,16 @@
+production:
+  sessions:
+    default:
+      uri: <%= ENV['MONGOHQ_URL'] %>
+development:
+  sessions:
+    default:
+      hosts:
+        - localhost:27017
+      database: authmail_development
+test:
+  sessions:
+    default:
+      hosts:
+        - localhost:27017
+      database: authmail_test
