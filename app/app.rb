@@ -63,9 +63,9 @@ class App < Sinatra::Base
     if @account.valid_request?(request)
       @authentication = Authentication.create!(account: @account, email: params[:email], redirect: params[:redirect_uri], state: params[:state])
       @authentication.deliver!
-      erb :login
+      erb :login, layout: :bare
     else
-      erb :failure
+      erb :failure, layout: :bare
     end
   end
   
