@@ -7,6 +7,7 @@ gem 'mongoid'
 gem 'jwt'
 gem 'handlebars'
 gem 'dotenv'
+gem 'redis'
 gem 'sidekiq'
 
 gem 'puma'

@@ -118,6 +118,7 @@ DEPENDENCIES
   pony
   puma
   racksh
+  redis
   rspec
   sidekiq
   sinatra
