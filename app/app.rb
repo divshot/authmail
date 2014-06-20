@@ -1,9 +1,11 @@
 require 'json'
+require 'action_view/helpers/date_helper'
 
 class App < Sinatra::Base
   use Rack::Session::Cookie, expire_after: 2592000, secret: ENV['SECRET']
   
   helpers do
+    include ActionView::Helpers::DateHelper
     def current_user
       session[:current_user]
     end
@@ -75,6 +77,11 @@ class App < Sinatra::Base
     else
       erb :failure
     end
+  end
+  
+  get '/logout' do
+    session.destroy
+    redirect '/'
   end
   
   post '/send' do

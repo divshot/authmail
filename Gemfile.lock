@@ -1,6 +1,7 @@
 GEM
   remote: https://rubygems.org/
   specs:
+    actionpack (1.4.0)
     activemodel (3.2.18)
       activesupport (= 3.2.18)
       builder (~> 3.0.0)
@@ -110,6 +111,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  actionpack
   dotenv
   guard-rspec
   handlebars

@@ -1,0 +1,35 @@
+.lander-header {
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 2em;
+  margin-bottom: 2em;
+  margin-top: 4em;
+}
+
+.lander-title {
+  font-weight: 800;
+  font-size: 4em;
+  letter-spacing: -0.05em;
+}
+
+.bottom {
+  margin-top: 8em;
+  margin-bottom: 1em;
+  text-align: center;
+}
+
+.bottom a {
+  color: #333;
+}
+
+.bottom-nav a {
+  margin: 0 0.5em;
+}
+
+.bottom .text-muted {
+  font-size: 0.8em;
+  margin-top: 0.5em;
+}
+
+.signup-form {
+  margin: 4em;
+}

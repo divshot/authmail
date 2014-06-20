@@ -1,22 +1,43 @@
 <p>Hey there, <b><%= current_user %></b>!</p>
 
+<h2>Your Apps</h2>
+<div class="row">
 <% @accounts.each do |account| %>
-<div>
-  <h3><a href="/accounts/<%= account.id %>"><%= account.name %></a></h3>
-  <p><b>Client ID:</b> <code><%= account.id %></code></p>
-  <p><b>Secret:</b> <code><%= account.secret %></code></p>
-</div>
+  <div class="col-md-4">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title"><a href="/accounts/<%= account.id %>"><%= account.name %></a></h3>
+    </div>
+    <div class="panel-body">
+      <p><b>Client ID:</b> <code><%= account.id %></code></p>
+      <p><b>Secret:</b> <code><%= account.secret %></code></p>
+    </div>
+  </div>
+  </div>
 <% end %>
+</div>
+  
+<form action="/accounts" method="post" role="form" class="row">
+  <div class="col-md-6 col-md-offset-3">
+    <h3>Register a New Application</h3>
+    <div class="form-group">
+      <label for="account_name">Name</label>
+      <input type="text" name="account[name]" id="account_name" class="form-control">
+    </div>
 
-<form action="/accounts" method="post">
-  <label for="account_name">Name:</label>
-  <input type="text" name="account[name]" id="account_name">
-  <br>
-  <label for="account_origins_text">Origins (one per line):</label>
-  <textarea name="account[origins_text]" id="account_origins_text" placeholder="http://www.mysite.com"></textarea>
-  <br>
-  <label for="account_redirect">Default Redirect URL:</label>
-  <input type="url" name="account[redirect]" id="account_redirect" placeholder="http://www.mysite.com/auth">
-  <br>
-  <button type="submit">Create New Application</button>
+    <div class="form-group">
+      <label for="account_origins_text">Origins (one per line)</label>
+      <textarea name="account[origins_text]" id="account_origins_text" placeholder="http://www.mysite.com" class="form-control"></textarea>
+    </div>
+
+    <div class="form-group">
+      <label for="account_redirect">Default Redirect URL</label>
+      <input type="url" name="account[redirect]" id="account_redirect" placeholder="http://www.mysite.com/auth" class="form-control"
+    </div>
+
+    <div class="form-group">
+      <hr>
+      <button type="submit" class="btn btn-success">Create New Application</button>
+    </div>
+  </div>
 </form>

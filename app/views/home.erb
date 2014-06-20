@@ -1,14 +1,31 @@
-<!doctype html>
-<html>
-  <head>
-  </head>
-  <body>
-    <p>Welcome to <b>AuthMail</b>.</p>
-    
-    <form action="/login" method="post">
-      <input name="client_id" type="hidden" value="<%= Account.master.id %>">
-      <input name="email" placeholder="you@example.com">
-      <button type="submit">Login</button>
-    </form>
-  </body>
-</html>
+<div class="text-center">
+  <header class="lander-header">
+    <h1 class='lander-title'>AuthMail</h1>
+    <h2>Authentication without passwords. It's that simple.</h2>
+  </header>
+  
+  <div class="row">
+    <div class="col-md-4">
+      <h3>Enter an email address</h3>
+      <p>Users enter their email address, you send it to us.</p>
+    </div>
+    <div class="col-md-4">
+      <h3>Click the email link</h3>
+      <p>Users receive an email with a time-sensitive link.</p>
+    </div>
+    <div class="col-md-4">
+      <h3>You're logged in</h3>
+      <p>We send you a secure token verifying the login.</p>
+    </div>
+  </div>
+  
+  <form class="signup-form" action="/login" method="post">
+    <p class="lead">Ready to get started?</p>
+
+    <input name="client_id" type="hidden" value="<%= Account.master.id %>">
+    <div class="input-group col-md-4 col-md-offset-4">
+      <input name="email" type="email" placeholder="you@example.com" class="input-lg">
+      <span class="input-group-btn"><button type="submit" class="btn btn-lg btn-success">Login</button></span>
+    </div>
+  </form>
+</div>
