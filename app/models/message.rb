@@ -29,13 +29,20 @@ class Message
   end
   
   def mail_config
-    case ENV['RACK_ENV']
-    when 'development'
-      {via: LetterOpener::DeliveryMethod, via_options: APP_ROOT + '/tmp/letter_opener'}
-    when 'test'
-      {via: :test}
+    if ENV['MANDRILL_USERNAME']
+      {
+        via: :smtp,
+        via_options: {
+          :port =>           '587',
+          :address =>        'smtp.mandrillapp.com',
+          :user_name =>      ENV['MANDRILL_USERNAME'],
+          :password =>       ENV['MANDRILL_APIKEY'],
+          :domain =>         'heroku.com',
+          :authentication => :plain
+        }
+      }
     else
-      {}
+      {via: :test}
     end
   end
   
