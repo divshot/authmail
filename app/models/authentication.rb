@@ -13,7 +13,7 @@ class Authentication
   field :status_updated_at, type: Time
   field :redirect, type: String
   field :expires_at, type: Time
-  field :state, type: Hash
+  field :state
   
   
   validates :ref, presence: true
@@ -70,6 +70,17 @@ class Authentication
   
   def deliver!
     Message::Worker.perform_async(self.id.to_s)
+  end
+  
+  def payload
+    JWT.encode({
+      aud: account.id,
+      sub: self.email,
+      exp: 5.minutes.from_now.to_i,
+      iat: self.created_at.to_i,
+      jti: self.ref,
+      state: self.state
+    }, account.secret)
   end
   
   protected

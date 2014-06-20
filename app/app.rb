@@ -1,26 +1,75 @@
 require 'json'
 
 class App < Sinatra::Base
-  get '/' do
-    erb :home
+  use Rack::Session::Cookie, expire_after: 2592000, secret: ENV['SECRET']
+  
+  helpers do
+    def current_user
+      session[:current_user]
+    end
   end
   
-  post '/register' do
-    Account.create(
-      name: params[:name],
-      email: params[:email]
-    )
+  def require_login!
+    redirect '/' unless current_user
+  end
+  
+  def authenticate!
+    return false unless params[:payload]
+    begin
+      payload = JWT.decode(params[:payload], Account.master.secret).first
+      session[:current_user] = payload["sub"]
+    rescue JWT::DecodeError
+      false
+    end
+  end
+  
+  get '/' do
+    if current_user || authenticate!
+      redirect '/dashboard'
+    else
+      erb :home
+    end
+  end
+  
+  get '/dashboard' do
+    require_login!
+    @accounts = Account.where(admins: current_user)
+    erb :dashboard
+  end
+  
+  post '/accounts' do
+    require_login!
+    @account = Account.new(params[:account].merge(admins: [current_user]))
+    if @account.save
+      redirect "/accounts/#{@account.id}"
+    else
+      redirect :back
+    end
+  end
+  
+  get '/accounts/:id' do
+    require_login!
+    @account = Account.where(admins: current_user).first
+    @authentications = @account.authentications.limit(50)
+    erb :account
   end
   
   post '/login' do
     params.merge! JSON.parse(request.env['rack.input'].read).symbolize_keys if request.content_type == 'application/json'
     @account = Account.find(params[:client_id])
-    @authentication = Authentication.create!(account: @account, email: params[:email], redirect: params[:redirect_uri])
-    @authentication.deliver!
+    
+    if @account.valid_request?(request)
+      @authentication = Authentication.create!(account: @account, email: params[:email], redirect: params[:redirect_uri], state: params[:state])
+      @authentication.deliver!
+      erb :login
+    else
+      erb :failure
+    end
   end
   
   get '/login/:ref' do
-    @authentication = Authentication.find_by_ref(params[:ref])
+    @authentication = Authentication.where(ref: params[:ref]).first
+    
     if @authentication.consume!
       redirect @authentication.redirect + "?payload=#{@authentication.payload}"
     else

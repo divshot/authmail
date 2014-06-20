@@ -4,5 +4,11 @@
   </head>
   <body>
     <p>Welcome to <b>AuthMail</b>.</p>
+    
+    <form action="/login" method="post">
+      <input name="client_id" type="hidden" value="<%= Account.master.id %>">
+      <input name="email" placeholder="you@example.com">
+      <button type="submit">Login</button>
+    </form>
   </body>
 </html>

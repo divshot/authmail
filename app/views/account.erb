@@ -1,0 +1,11 @@
+<h1><%= @account.name %></h1>
+
+<table>
+  <% @authentications.each do |authentication| %>
+  <tr>
+    <th><%= authentication.email %></th>
+    <td><%= authentication.status %></td>
+    <td><%= authentication.status_updated_at %></td>
+  </tr>
+  <% end %>
+</table>
