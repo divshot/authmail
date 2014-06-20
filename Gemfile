@@ -11,9 +11,9 @@ gem 'redis'
 gem 'sidekiq'
 
 gem 'puma'
+gem 'racksh'
 
 group :development, :test do
-  gem 'racksh'
   gem 'rspec'
   gem 'guard-rspec'
 end
