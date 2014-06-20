@@ -1,0 +1,66 @@
+
+<h1 class="page-header">AuthMail Documentation</h1>
+
+<p class="lead">15 minutes could save your users the headache of remembering yet another password.</p>
+
+<h3>Registering an Application</h3>
+
+<p>First, you'll need to <a href="/" target="_blank">sign in</a> to AuthMail. You do this via email, of course.</p>
+
+<p>Once you sign up, you'll need to <b>Create an Application</b>. We don't need much info, but for starters we'll need:</p>
+
+<table class="table">
+  <tr><th>Name</th><td>Just a human friendly name for your application. This will be used in emails and interface text for the user.</td></th></tr>
+  <tr><th>Origins</th><td>A list of the acceptable origins for login form submission or AJAX requests. An origin is everything before the path of a URL (e.g. <code>http://example.com</code>)</td></tr>
+  <tr><th>Redirect&nbsp;URI</th><td>A default redirect URI after a user has successfully logged in. You can also submit a custom redirect for each login so long as it's on one of your listed origins.</td></tr>
+</table>
+
+<h3>Requesting a Login</h3>
+
+<p>To request a login, you simply need to create a <code>&lt;form&gt;</code> with <code>client_id</code>, <code>email</code>, and optional <code>redirect_uri</code> fields. An example might look like:</p>
+
+<pre>&lt;form action=&quot;https://authmail.co/login&quot; method=&quot;post&quot;&gt;
+  &lt;input type=&quot;hidden&quot; name=&quot;client_id&quot; value=&quot;abc123&quot;&gt;
+  &lt;input type=&quot;email&quot; name=&quot;email&quot; placeholder=&quot;you@example.com&quot;&gt;
+  &lt;button type=&quot;submit&quot;&gt;Login&lt;/button&gt;
+&lt;/form&gt;</pre>
+
+<p>When the user submits this form, AuthMail will send her an email with a unique secure login link. To login, the user simply needs to click the link in the email.</p>
+
+<p><b>Note:</b> For security, the email link expires after 10 minutes and can only be used once. Users will be notified if a link has expired or already been used.</p>
+
+<h3>Verifying Login</h3>
+
+<p>Once a login is complete, AuthMail creates a <a href="http://tools.ietf.org/html/draft-ietf-oauth-json-web-token-21">JSON Web Token</a> that is signed with your application secret (available from the application dashboard). The user is then redirected to your specified redirect URL with the JWT passed via the <code>payload</code> parameter. The structure of the token is as follows:</p>
+
+<pre>{
+  "sub":"user@example.com", // the user's email
+  "aud":"abc123",           // your client id
+  "jti":"unique-id",        // a unique id for this login. check to prevent replays
+  "exp": 1403255303,        // the expiration time for this token. do not use after it has passed
+  "iat": 1403253303,        // the time at which the login was requested
+  "state": "???"            // any information you passed to the state parameter of /login
+}</pre>
+
+<h4>Decoding the Token</h4>
+
+<p>There are client libraries available in most languages to decode JWT tokens. An example of decoding in a Sinatra appliation might look like this:</p>
+
+<pre>require 'jwt'
+
+get '/auth' do
+  begin
+    auth_info, _ = *JWT.decode(params[:payload], ENV['AUTHMAIL_SECRET'])
+    if auth_info["exp"] > Time.now.to_i
+      auth_info["sub"] # here's your user's email!
+    else
+      # the token has expired, display an error
+    end
+  rescue JWT::DecodeError
+    # display an error message, the JWT is invalid
+  end
+end</pre>
+
+<p>Once you've decoded and verified the token, you will have the authenticated email address of your user! You can use this to look up an existing account or create a new one if you haven't seen the email before.</p>
+
+<p class='text-muted'>This documentation is a work in progress. If you run into trouble, <a href="mailto:hello@authmail.co">shoot us an email</a>!</p>

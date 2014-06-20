@@ -33,6 +33,14 @@ class App < Sinatra::Base
     end
   end
   
+  get '/about' do
+    redirect '/docs'
+  end
+  
+  get '/docs' do
+    erb :docs
+  end
+  
   get '/dashboard' do
     require_login!
     @accounts = Account.where(admins: current_user)
