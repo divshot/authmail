@@ -59,7 +59,7 @@ class App < Sinatra::Base
   
   get '/accounts/:id' do
     require_login!
-    @account = Account.where(admins: current_user).first
+    @account = Account.where(admins: current_user).find(params[:id])
     @authentications = @account.authentications.limit(50)
     erb :account
   end

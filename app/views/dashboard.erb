@@ -1,5 +1,6 @@
 <p>Hey there, <b><%= current_user %></b>!</p>
 
+<% if @accounts.any? %>
 <h2>Your Apps</h2>
 <div class="row">
 <% @accounts.each do |account| %>
@@ -16,7 +17,9 @@
   </div>
 <% end %>
 </div>
-  
+<hr>
+<% end %>
+
 <form action="/accounts" method="post" role="form" class="row">
   <div class="col-md-6 col-md-offset-3">
     <h3>Register a New Application</h3>
