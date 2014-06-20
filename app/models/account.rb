@@ -26,7 +26,8 @@ class Account
     Account.find_by_secret(ENV['SECRET']) || Account.create!(
       name: 'AuthMail',
       secret: ENV['SECRET'],
-      origins: [ENV['ORIGIN']]
+      origins: [ENV['ORIGIN']],
+      admins: ['hello@authmail.co']
     )
   end
   
