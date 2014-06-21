@@ -10,11 +10,10 @@ class Authentication
   field :email, type: String
   field :status, type: String, default: 'pending'
   field :status_message, type: String
-  field :status_updated_at, type: Time
+  field :status_updated_at, type: Time, default: ->{ Time.now }
   field :redirect, type: String
   field :expires_at, type: Time
   field :state
-  
   
   validates :ref, presence: true
   validates :email, presence: true
@@ -27,6 +26,10 @@ class Authentication
   
   def self.active(time = Time.now)
     where(:expires_at.gt => time)
+  end
+  
+  def self.recent
+    order_by(:status_updated_at.desc)
   end
   
   def redirect
@@ -51,6 +54,10 @@ class Authentication
   
   def expired?(time = Time.now)
     expires_at < time
+  end
+  
+  def updated_at
+    self.status_updated_at || self.created_at
   end
   
   def consume!

@@ -17,7 +17,7 @@ class Message
   
   def html_body
     @html_template ||= @hbs.compile(account.html_template || DEFAULT_HTML_TEMPLATE)
-    render(@html_template) + "\n\n<img src='#{ENV['ORIGIN']}/track/#{authentication.id}/opened.gif' width='1' height='1'>"
+    render(@html_template) + "\n\n<img src='#{ENV['ORIGIN']}/track/#{authentication.ref}/opened.gif' width='1' height='1'>"
   end
   
   def render(template)
@@ -54,6 +54,7 @@ class Message
       body: text_body,
       html_body: html_body
     }.merge(mail_config))
+    authentication.status!(:sent)
   end
   
   class Worker

@@ -16,7 +16,7 @@
         <th><%= authentication.email %></th>
         <td><%= authentication.status %></td>
         <td><%= authentication.status_message %></td>
-        <td><time datetime="<%= authentication.status_updated_at.to_s %>"><%= distance_of_time_in_words_to_now(authentication.status_updated_at) %> ago</time></td>
+        <td><time datetime="<%= authentication.updated_at.to_s %>"><%= distance_of_time_in_words_to_now(authentication.updated_at) %> ago</time></td>
       </tr>
       <% end %>
     </table>
