@@ -14,4 +14,16 @@ describe Authentication do
     subject.redirect = 'http://example.com/auth2'
     expect(subject).to be_valid
   end
+  
+  describe '#signup?' do
+    before{ account.save! }
+    it 'should be false if its not the first auth for this email' do
+      account.authentications.create!(email: 'bob@example.com')
+      expect(subject).not_to be_signup
+    end
+    
+    it 'should be true if its the first auth for this email' do
+      expect(subject).to be_signup
+    end
+  end
 end

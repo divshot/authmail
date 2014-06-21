@@ -72,6 +72,11 @@ class Authentication
     Message::Worker.perform_async(self.id.to_s)
   end
   
+  # whether or not this is the first auth for this email
+  def signup?
+    account.authentications.where(email: self.email).where(:_id.ne => self.id).empty?
+  end
+  
   def payload
     JWT.encode({
       aud: account.id,
@@ -79,7 +84,8 @@ class Authentication
       exp: 5.minutes.from_now.to_i,
       iat: self.created_at.to_i,
       jti: self.ref,
-      state: self.state
+      state: self.state,
+      signup: self.signup?
     }, account.secret)
   end
   
