@@ -1,0 +1,8 @@
+<header>
+  <ul class='nav nav-pills pull-right'>
+    <li<%= ' class="active"' if @tab == :activity %>><a href='/accounts/<%= @account.id %>'>Activity</a></li>
+    <li<%= ' class="active"' if @tab == :billing %>><a href='/accounts/<%= @account.id %>/billing'>Billing</a></li>
+    <li<%= ' class="active"' if @tab == :settings %>><a href='/accounts/<%= @account.id %>/settings'>Settings</a></li>
+  </ul>
+  <h1 class='page-header'><%= @account.name %><% if @account.has_card? %> <small class='text-success'>(Club Member)</small><% end %></h1>
+</header>

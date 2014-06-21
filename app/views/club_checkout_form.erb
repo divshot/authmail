@@ -1,0 +1,23 @@
+<form id="card-form" action="/accounts/<%= @account.id %>/card" method="post"><input id="card-token" name="card" type="hidden"></form>
+<script src="https://checkout.stripe.com/checkout.js"></script>
+<script>
+  var handler = StripeCheckout.configure({
+    key: "<%= ENV['STRIPE_KEY'] %>",
+    token: function(token) {
+      document.getElementById('card-token').value = token.id;
+      document.getElementById('card-form').submit();
+    }
+  });
+
+  document.getElementById('checkout-button').addEventListener('click', function(e) {
+    // Open Checkout with further options
+    handler.open({
+      name: 'AuthMail Beta',
+      email: '<%= current_user %>',
+      description: 'Early Adopter Club Signup ($0)',
+      amount: 0,
+      panelLabel: "Join the Club!"
+    });
+    e.preventDefault();
+  });
+</script>

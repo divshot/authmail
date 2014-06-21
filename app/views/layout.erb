@@ -19,6 +19,7 @@
   <body>
     <%= erb :nav if current_user %>
     <div class="container">
+      <% if @error %><div class="alert alert-danger"><%= @error %></div><% end %>
       <%= yield %>
     </div>
     
@@ -27,6 +28,7 @@
         <a href='/about'>About</a>
         <a href='/docs'>Documentation</a>
         <a href='http://twitter.com/authmail'>Twitter</a>
+        <a href='mailto:hello@authmail.co'>Support</a>
       </nav>
       <div class='text-muted'>An <a href="https://github.com/divshot/authmail">open source micro-service</a> by <a href="http://www.divshot.com/">Divshot</a>.</div>
     </footer>

@@ -15,6 +15,10 @@ class Account
   field :html_template, type: String
   field :text_template, type: String
   
+  field :stripe_id, type: String
+  field :card_type, type: String
+  field :card_digits, type: String
+  
   validates :name, presence: true
   validates :secret, uniqueness: true, presence: true
   
@@ -32,10 +36,18 @@ class Account
     )
   end
   
+  def self.with_card
+    where(:stripe_id.exists => true, :card_digits.exists => true)
+  end
+  
   def valid_request?(request)
     origin = request.env['HTTP_ORIGIN'] || request.env['HTTP_REFERER'] || ""
     return false unless origin = origin.match(ORIGIN_REGEXP).try(:[], 0)
     origins.include?(origin)
+  end
+  
+  def has_card?
+    stripe_id? && card_digits?
   end
   
   def origins_text=(text)

@@ -1,0 +1,16 @@
+<%= erb :account_header %>
+
+<div class="row"><div class="col-md-8 col-md-offset-2">
+  <p class="lead">Thank you so much for joining the Early Adopter's Club!</p>
+  
+  <div class="alert alert-info">We'll be in touch soon (if we haven't already) to find out more about what you want to see from AuthMail as well as give you access
+    to the club member exclusives.</div>
+  
+  <p class="text-center">We have a <b><%= @account.card_type %></b> card ending with <b><%= @account.card_digits %></b> on file for you.</p>
+  
+  <p class="text-center">
+    <a id="checkout-button" class="btn btn-primary">Update Card</a>
+  </p>
+</div></div>
+
+<%= erb :club_checkout_form %>

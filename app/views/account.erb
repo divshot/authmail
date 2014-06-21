@@ -1,9 +1,9 @@
-<h1><%= @account.name %></h1>
+<%= erb :account_header %>
 
 <% if @authentications.any? %>
 <div class="row">
   <div class="col-lg-9 col-md-8">
-    <h2>Recent Logins</h2>
+    <h2>Recent Activity</h2>
     <table class="table">
       <thead>
         <th>Email</th>

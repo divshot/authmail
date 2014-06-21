@@ -10,6 +10,7 @@ gem 'dotenv'
 gem 'redis'
 gem 'sidekiq'
 gem 'actionpack', require: false
+gem 'stripe'
 
 gem 'puma'
 gem 'racksh'

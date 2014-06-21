@@ -61,7 +61,62 @@ class App < Sinatra::Base
     require_login!
     @account = Account.where(admins: current_user).find(params[:id])
     @authentications = @account.authentications.recent.limit(50)
+    @tab = :activity
     erb :account
+  end
+  
+  get '/accounts/:id/billing' do
+    require_login!
+    @account = Account.where(admins: current_user).find(params[:id])
+    @tab = :billing
+    
+    if @account.has_card?
+      erb :club_member
+    else
+      erb :billing
+    end
+  end
+  
+  get '/accounts/:id/settings' do
+    require_login!
+    @account = Account.where(admins: current_user).find(params[:id])
+    @tab = :settings
+    erb :settings
+  end
+  
+  post '/accounts/:id/card' do
+    require_login!
+    @account = Account.where(admins: current_user).find(params[:id])
+    
+    begin
+      if @account.stripe_id?
+        customer = Stripe::Customer.retrieve(@account.stripe_id)
+        customer.card = params[:card]
+        customer.save
+      else
+        customer = Stripe::Customer.create(
+          email: current_user,
+          description: @account.name,
+          card: params[:card]
+        )
+      end
+
+      card = customer.cards.data.first
+      @account.update_attributes(stripe_id: customer.id, card_type: card.brand, card_digits: card.last4)
+      redirect "/accounts/#{@account.id}/billing"
+  
+    rescue Stripe::CardError => e
+      body = e.json_body
+      err  = body[:error]
+      @error = "<b>Card Issue:</b> #{err[:message]}"
+      erb :billing
+    rescue Stripe::InvalidRequestError => e
+      @error = "There was a problem capturing your card information. Please try again."
+      erb :billing
+    rescue Stripe::StripeError => e
+      @error = "Something went wrong while processing your request. Please <a href='mailto:hello@authmail.co'>contact support</a>."
+      erb :billing
+    end
   end
   
   post '/login' do
