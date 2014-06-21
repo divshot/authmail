@@ -7,6 +7,9 @@ Dotenv.load
 
 Mongoid.load!(APP_ROOT + '/config/mongoid.yml')
 
+Logger.send :alias_method, :write, :<<
+$logger = Logger.new($stdout)
+
 unless ENV['RACK_ENV'] == 'production'
   require 'sidekiq/testing'
   Sidekiq::Testing.inline!

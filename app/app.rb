@@ -87,6 +87,18 @@ class App < Sinatra::Base
     end
   end
   
+  get '/track/:ref/opened.gif' do
+    @authentication = Authentication.where(ref: params[:ref]).first
+    @authentication.status!(:opened) if @authentication.try(:status) == 'sent'
+    
+    content_type 'image/gif'
+    Base64.decode64 'R0lGODlhAQABAIABAP///wAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=='
+  end
+  
+  get '/__testrender' do
+    Account.master.authentications.new(email: 'test@example.com').message.html_body
+  end
+  
   get '/logout' do
     session.destroy
     redirect '/'

@@ -61,7 +61,7 @@ class Authentication
     true
   end
   
-  def status!(status, message)
+  def status!(status, message = nil)
     self.status = status.to_s
     self.status_message = message
     self.status_updated_at = Time.now
@@ -83,7 +83,7 @@ class Authentication
       sub: self.email,
       exp: 5.minutes.from_now.to_i,
       iat: self.created_at.to_i,
-      jti: self.ref,
+      jti: self.id,
       state: self.state,
       signup: self.signup?
     }, account.secret)

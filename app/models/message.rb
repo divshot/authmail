@@ -17,7 +17,7 @@ class Message
   
   def html_body
     @html_template ||= @hbs.compile(account.html_template || DEFAULT_HTML_TEMPLATE)
-    render(@html_template)
+    render(@html_template) + "\n\n<img src='#{ENV['ORIGIN']}/track/#{authentication.id}/opened.gif' width='1' height='1'>"
   end
   
   def render(template)
