@@ -24,16 +24,6 @@ bundle install
 rackup -p 3000
 ```
 
-## Usage Suggestions
-
-This service and all its code are released under the permissive MIT license. We
-offer the source in good faith so that you may tinker and contribute to your
-heart's content.
-
-If you decide to run your own AuthMail server, we ask that you do it only for
-single-tenant (i.e. your own application) purposes. Spirit of collaboration and
-all that.
-
 ## License (MIT)
 
 Copyright (c) 2014 Divshot, Inc.
@@ -55,3 +45,13 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
+
+### Usage Suggestions
+
+This service and all its code are released under the permissive MIT license. We
+offer the source in good faith so that you may tinker and contribute to your
+heart's content.
+
+If you decide to run your own AuthMail server, we ask that you do it only for
+single-tenant (i.e. your own application) purposes. Spirit of collaboration and
+all that.
