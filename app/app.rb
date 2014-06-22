@@ -129,6 +129,13 @@ class App < Sinatra::Base
     erb :settings
   end
   
+  get '/accounts/:id/verify' do
+    require_login!
+    @account = Account.where(admins: current_user).find(params[:id])
+    @payload = JWT.decode(params[:payload], @account.secret).first
+    erb :verify
+  end
+  
   post '/accounts/:id/card' do
     require_login!
     @account = Account.where(admins: current_user).find(params[:id])
@@ -168,6 +175,7 @@ class App < Sinatra::Base
   end
   
   post '/login' do
+    @skip_header = true
     params.merge! JSON.parse(request.env['rack.input'].read).symbolize_keys if request.content_type == 'application/json'
     @account = Account.find(params[:client_id])
     
@@ -183,7 +191,9 @@ class App < Sinatra::Base
   end
   
   get '/login/:ref' do
+    @skip_header = true
     @authentication = Authentication.where(ref: params[:ref]).first
+    @account = @authentication.account
     
     if @authentication.consume!
       @account.track 'Authentication Consumed', email: params[:email]

@@ -1,28 +1,35 @@
 <%== erb :account_header %>
 
-<% if @authentications.any? %>
 <div class="row">
-  <div class="col-lg-9 col-md-8">
-    <h2>Recent Activity</h2>
-    <table class="table">
-      <thead>
-        <th>Email</th>
-        <th><abbr title="One of pending, sent, opened, clicked, succeeded, failed">Status</abbr></th>
-        <th><abbr title="Will explain failure if a problem occurred">Note</abbr></th>
-        <th>Last Changed</th>
-      </thead>
-      <% @authentications.each do |authentication| %>
-      <tr>
-        <th><%= authentication.email %></th>
-        <td><%= authentication.status %></td>
-        <td><%= authentication.status_message %></td>
-        <td><time datetime="<%= authentication.updated_at.to_s %>"><%= distance_of_time_in_words_to_now(authentication.updated_at) %> ago</time></td>
-      </tr>
-      <% end %>
-    </table>
-  </div>
+  <% if @authentications.any? %>
+    <div class="col-lg-9 col-md-8">
+      <h2>Recent Activity</h2>
+      <table class="table">
+        <thead>
+          <th>Email</th>
+          <th><abbr title="One of pending, sent, opened, clicked, succeeded, failed">Status</abbr></th>
+          <th><abbr title="Will explain failure if a problem occurred">Note</abbr></th>
+          <th>Last Changed</th>
+        </thead>
+        <% @authentications.each do |authentication| %>
+        <tr>
+          <th><%= authentication.email %></th>
+          <td><%= authentication.status %></td>
+          <td><%= authentication.status_message %></td>
+          <td><time datetime="<%= authentication.updated_at.to_s %>"><%= distance_of_time_in_words_to_now(authentication.updated_at) %> ago</time></td>
+        </tr>
+        <% end %>
+      </table>
+    </div>
+  <% else %>
+    <div class="app-docs">
+      <%== erb :docs %>
+    </div>
+  <% end %>
 
   <div class="col-md-4 col-lg-3">
+    <h4>App Info</h4>
+    
     <dl>
       <dt>Client ID:</dt>
       <dd><code><%= @account.id %></code></dd>
@@ -35,8 +42,17 @@
       <dt>Default Redirect:</dt>
       <dd><small><%= @account.redirect %></small></dd>
     </dl>
+    
+    <h4>Test Login</h4>
+    
+    <form class="test-form" action="/login" method="post">
+      <input name="client_id" type="hidden" value="<%= @account.id %>">
+      <input name="redirect_uri" type="hidden" value="<%= "#{ENV['ORIGIN']}/accounts/#{@account.id}/verify" %>">
+      <div class="input-group">
+        <input name="email" type="email" placeholder="<%= current_user %>" class="form-control">
+        <span class="input-group-btn"><button type="submit" class="btn btn-success">Login</button></span>
+      </div>
+
+    </form>
   </div>
 </div>
-<% else %>
-<%== erb :docs %>
-<% end %>

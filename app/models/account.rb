@@ -44,7 +44,7 @@ class Account
   def valid_request?(request)
     origin = request.env['HTTP_ORIGIN'] || request.env['HTTP_REFERER'] || ""
     return false unless origin = origin.match(ORIGIN_REGEXP).try(:[], 0)
-    origins.include?(origin)
+    (origins + [ENV['ORIGIN']]).include?(origin)
   end
   
   def has_card?
