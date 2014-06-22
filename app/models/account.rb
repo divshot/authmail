@@ -21,6 +21,7 @@ class Account
   
   validates :name, presence: true
   validates :secret, uniqueness: true, presence: true
+  validates_format_of :reply_to, with: /\A(.*<)?[a-z0-9+.-]+@[a-z0-9+.-]+>?\z/i, message: 'must be a valid email'
   
   has_many :authentications
   
