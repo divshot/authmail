@@ -43,10 +43,13 @@ class Account
   
   def valid_request?(request)
     origin = request.env['HTTP_ORIGIN'] || request.env['HTTP_REFERER'] || ""
-    possible = (origins + [ENV['ORIGIN']])
-    $logger.debug "[origin-check] account=#{name} origin=#{request.env['HTTP_ORIGIN']} referer=#{request.env['HTTP_REFERER']} possible=#{possible.join(',')}"
+    $logger.debug "[origin-check] account='#{name}' origin=#{request.env['HTTP_ORIGIN']} referer=#{request.env['HTTP_REFERER']} possible=#{valid_origins.join(',')}"
     return false unless origin = origin.match(ORIGIN_REGEXP).try(:[], 0)
-    possible.include?(origin)
+    valid_origins.include?(origin)
+  end
+
+  def valid_origins
+    origins + [ENV['ORIGIN']]
   end
   
   def has_card?
