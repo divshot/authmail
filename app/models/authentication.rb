@@ -110,7 +110,7 @@ class Authentication
   end
   
   def redirect_matches_origin
-    account.origins.each do |origin|
+    (account.origins + ENV['ORIGIN']).each do |origin|
       return if self.redirect.starts_with?(origin + '/')
     end
     errors.add(:redirect, 'must be on a provided origin for this account.')
