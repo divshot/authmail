@@ -1,7 +1,7 @@
 <div class="text-center">
   <header class="lander-header">
     <h1 class='lander-title'>AuthMail</h1>
-    <h2>Authentication without passwords. It's that simple.</h2>
+    <h2>Authenticate your users, no password required. It's that simple.</h2>
   </header>
   
   <div class="row">
@@ -23,9 +23,27 @@
     <p class="lead">Ready to get started?</p>
 
     <input name="client_id" type="hidden" value="<%= Account.master.id %>">
-    <div class="input-group col-md-4 col-md-offset-4">
-      <input name="email" type="email" placeholder="you@example.com" class="input-lg">
+    <div class="input-group" style="max-width: 450px; margin: 0 auto;">
+      <input name="email" type="email" placeholder="you@example.com" class="input-lg form-control">
       <span class="input-group-btn"><button type="submit" class="btn btn-lg btn-success">Login</button></span>
     </div>
+    
   </form>
+  
+  <hr>
+  
+  <div class="row text-left">
+    <div class="col-md-5 col-md-offset-1">
+      <p class='lead'><b>Passwords are hard.</b> The better a password is, the harder it is
+      to use. Ever tried to type a strong password on a mobile device?
+      For developers, secure storage and passwords resets are unnecessary headaches.</p>
+    </div><div class="col-md-5"> 
+      <p class='lead'><b>Email is easy.</b> Every person knows how to access their email on every device
+      they use. AuthMail swaps entering a password with receiving an email. Better for users, better for
+        developers. It's that simple.</p>
+    </div>
+  </div>
+  
+  <p>Oh yeah, did we mention that AuthMail is <a href="https://github.com/divshot/authmail" target="_blank">100% open source</a>?</p>
+
 </div>
