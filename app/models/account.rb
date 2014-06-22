@@ -9,7 +9,7 @@ class Account
   field :active, type: Boolean
   field :admins, type: Array
   field :reply_to, type: String
-  field :origins, type: Array
+  field :origins, type: Array, default: []
   field :redirect, type: String
   field :secret, type: String
   field :html_template, type: String

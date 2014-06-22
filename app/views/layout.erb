@@ -17,20 +17,20 @@
     <![endif]-->
   </head>
   <body>
-    <%= erb :nav if current_user %>
+    <% if current_user %><%== erb :nav %><% end %>
     <div class="container">
-      <% if @error %><div class="alert alert-danger"><%= @error %></div><% end %>
-      <%= yield %>
+      <% if @error %><div class="alert alert-danger"><%== @error %></div><% end %>
+      <%== yield %>
     </div>
     
     <footer class='bottom container'>
       <nav class='bottom-nav'>
-        <a href='/about'>About</a>
+        <a href='/faq'>FAQ</a>
         <a href='/docs'>Documentation</a>
         <a href='http://twitter.com/authmail'>Twitter</a>
-        <a href='mailto:hello@authmail.co'>Support</a>
+        <a href='/support'>Support</a>
       </nav>
-      <div class='text-muted'>An <a href="https://github.com/divshot/authmail">open source micro-service</a> by <a href="http://www.divshot.com/">Divshot</a>.</div>
+      <div class='text-muted'>An <a href="https://github.com/divshot/authmail" target="_blank">open source micro-service</a> by <a href="http://www.divshot.com/">Divshot</a>.</div>
     </footer>
   </body>
 </html>

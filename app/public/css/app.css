@@ -33,3 +33,17 @@
 .signup-form {
   margin: 4em;
 }
+
+.faq h3 {
+  font-size: 20px;
+  font-weight: bold;0
+}
+
+.faq p {
+  font-size: 16px;
+  line-height: 150%;
+}
+
+.faq .question {
+  margin-bottom: 25px;
+}

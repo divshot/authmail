@@ -1,0 +1,23 @@
+  <div class="form-group">
+    <label for="account_name">Name</label>
+    <input type="text" name="account[name]" id="account_name" class="form-control" value="<%= account.name %>">
+    <span class="help-block">Your application's name, shown to users in emails etc.</span>
+  </div>
+
+  <div class="form-group">
+    <label for="account_reply_to">Reply To</label>
+    <input type="text" name="account[reply_to]" id="account_reply_to" class="form-control" placeholder="AuthMail <no-reply@authmail.co>" value="<%= account.reply_to %>">
+    <span class="help-block">The Reply-To address for login emails. Can either be a plain email address or in <code>Display Name &lt;email@address.com&gt;</code> format.</span>
+  </div>
+
+  <div class="form-group">
+    <label for="account_origins_text">Origins (one per line)</label>
+    <textarea name="account[origins_text]" id="account_origins_text" placeholder="http://www.mysite.com" class="form-control"><%= account.origins_text %></textarea>
+    <span class="help-block">Enter the origins from which you will be accessing AuthMail, either using AJAX or by submitting a form. Used to prevent CSRF attacks.</span>
+  </div>
+
+  <div class="form-group">
+    <label for="account_redirect">Default Redirect URL</label>
+    <input type="url" name="account[redirect]" id="account_redirect" placeholder="http://www.mysite.com/auth" class="form-control" value="<%= account.redirect %>">
+    <span class="help-block">The default URL to return to after a login link has been activated successfully.</span>
+  </div>

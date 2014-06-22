@@ -11,6 +11,7 @@ gem 'redis'
 gem 'sidekiq'
 gem 'actionpack', require: false
 gem 'stripe'
+gem 'erubis'
 
 gem 'puma'
 gem 'racksh'

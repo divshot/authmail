@@ -1,4 +1,4 @@
-<%= erb :account_header %>
+<%== erb :account_header %>
 
 <% if @authentications.any? %>
 <div class="row">
@@ -28,6 +28,8 @@
       <dd><code><%= @account.id %></code></dd>
       <dt>Secret:</dt>
       <dd><code><%= @account.secret %></code></dd>
+      <dt>Reply To:</dt>
+      <dd><%= @account.reply_to %></dd>
       <dt>Allowed Origins:</dt>
       <dd><small><%= @account.origins_text %></small></dd>
       <dt>Default Redirect:</dt>
@@ -36,5 +38,5 @@
   </div>
 </div>
 <% else %>
-<%= erb :docs %>
+<%== erb :docs %>
 <% end %>

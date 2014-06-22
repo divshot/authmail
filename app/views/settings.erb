@@ -1,0 +1,11 @@
+<%== erb :account_header %>
+
+<div class="row"><div class="col-md-6 col-md-offset-3">
+  <h2>Edit App Settings</h2>
+  <form action="/accounts/<%= @account.id %>" method="post">
+    <input type="hidden" name="_method" value="put">
+    <%== erb :account_form, locals: {account: @account} %>
+    <hr>
+    <button class="btn btn-success">Update App Settings</button>
+  </form>
+</div></div>

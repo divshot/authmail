@@ -1,8 +1,12 @@
 require 'json'
 require 'action_view/helpers/date_helper'
+require 'erubis'
 
 class App < Sinatra::Base
   use Rack::Session::Cookie, expire_after: 2592000, secret: ENV['SECRET']
+  use Rack::MethodOverride
+  
+  set :erb, :escape_html => true
   
   helpers do
     include ActionView::Helpers::DateHelper
@@ -33,12 +37,16 @@ class App < Sinatra::Base
     end
   end
   
-  get '/about' do
-    redirect '/docs'
+  get '/faq' do
+    erb :faq
   end
   
   get '/docs' do
     erb :docs
+  end
+  
+  get '/support' do
+    erb :support
   end
   
   get '/dashboard' do
@@ -63,6 +71,18 @@ class App < Sinatra::Base
     @authentications = @account.authentications.recent.limit(50)
     @tab = :activity
     erb :account
+  end
+  
+  put '/accounts/:id' do
+    require_login!
+    @account = Account.where(admins: current_user).find(params[:id])
+    if @account.update_attributes(params[:account])
+      redirect "/accounts/#{@account.id}"
+    else
+      @tab = :settings
+      @error = @account.errors.full_messages.join(", ")
+      erb :settings
+    end
   end
   
   get '/accounts/:id/billing' do
