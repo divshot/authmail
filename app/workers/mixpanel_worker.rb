@@ -6,6 +6,6 @@ class MixpanelWorker
   end
   
   def tracker
-    @tracker ||= Mixpanel::Tracket.new(ENV['MIXPANEL_KEY'])
+    @tracker ||= Mixpanel::Tracker.new(ENV['MIXPANEL_KEY'])
   end
 end

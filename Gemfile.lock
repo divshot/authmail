@@ -46,6 +46,7 @@ GEM
       mime-types (>= 1.16, < 3)
     method_source (0.8.2)
     mime-types (2.3)
+    mixpanel-ruby (1.4.0)
     mongoid (3.1.6)
       activemodel (~> 3.2)
       moped (~> 1.4)
@@ -123,6 +124,7 @@ DEPENDENCIES
   guard-rspec
   handlebars
   jwt
+  mixpanel-ruby
   mongoid
   pony
   puma
