@@ -48,4 +48,7 @@
   
 </div>
 
-<script>mixpanel.track('Viewed Lander')</script>
+<script>
+  mixpanel.track('Viewed Lander');
+  mixpanel.track_forms('#signup-form', 'Initiated Signup');
+</script>
