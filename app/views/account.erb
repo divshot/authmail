@@ -1,8 +1,9 @@
 <%== erb :account_header %>
 
 <div class="row">
-  <% if @authentications.any? %>
     <div class="col-lg-9 col-md-8">
+
+  <% if @authentications.any? %>
       <h2>Recent Activity</h2>
       <table class="table">
         <thead>
@@ -20,12 +21,12 @@
         </tr>
         <% end %>
       </table>
-    </div>
   <% else %>
     <div class="app-docs">
       <%== erb :docs %>
     </div>
   <% end %>
+    </div>
 
   <div class="col-md-4 col-lg-3">
     <h4>App Info</h4>
