@@ -58,6 +58,10 @@ class Account
     origins.join("\n")
   end
   
+  def track(*args)
+    MixpanelWorker.perform_async('track', admins.first, *args)
+  end
+  
   protected
   
   def generate_secret

@@ -19,13 +19,33 @@ class App < Sinatra::Base
     redirect '/' unless current_user
   end
   
+  def track(*args)
+    MixpanelWorker.perform_async('track', current_user || mixpanel_cookie_id, *args)
+  end
+  
   def authenticate!
     return false unless params[:payload]
     begin
       payload = JWT.decode(params[:payload], Account.master.secret).first
       session[:current_user] = payload["sub"]
+      if payload["signup"] && current_user && mixpanel_cookie_id
+        MixpanelWorker.new.perform('alias', current_user, mixpanel_cookie_id)
+        track 'Signup'
+      else
+        track 'Login'
+      end
     rescue JWT::DecodeError
       false
+    end
+  end
+  
+  def mixpanel_cookie_id
+    mp_cookie = request.cookies["mp_#{@token}_mixpanel"]
+    if mp_cookie
+      mp_env = JSON.parse(mp_cookie)
+      mp_env['distinct_id']
+    else
+      nil
     end
   end
   
@@ -59,8 +79,10 @@ class App < Sinatra::Base
     require_login!
     @account = Account.new(params[:account].merge(admins: [current_user]))
     if @account.save
+      @account.track 'Created Account'
       redirect "/accounts/#{@account.id}"
     else
+      @account.track 'Validation Error', event: 'Created Account', detail: @account.errors.full_messages
       redirect :back
     end
   end
@@ -77,9 +99,11 @@ class App < Sinatra::Base
     require_login!
     @account = Account.where(admins: current_user).find(params[:id])
     if @account.update_attributes(params[:account])
+      @account.track 'Updated Account'
       redirect "/accounts/#{@account.id}"
     else
       @tab = :settings
+      @account.track 'Validation Error', event: 'Updated Account', detail: @account.errors.full_messages
       @error = @account.errors.full_messages.join(", ")
       erb :settings
     end
@@ -113,12 +137,14 @@ class App < Sinatra::Base
         customer = Stripe::Customer.retrieve(@account.stripe_id)
         customer.card = params[:card]
         customer.save
+        @account.track 'Card Updated'
       else
         customer = Stripe::Customer.create(
           email: current_user,
           description: @account.name,
           card: params[:card]
         )
+        @account.track 'Card Captured'
       end
 
       card = customer.cards.data.first
@@ -128,6 +154,7 @@ class App < Sinatra::Base
     rescue Stripe::CardError => e
       body = e.json_body
       err  = body[:error]
+      @account.track 'Validation Error', action: 'Card Captured', detail: err[:code]
       @error = "<b>Card Issue:</b> #{err[:message]}"
       erb :billing
     rescue Stripe::InvalidRequestError => e
@@ -146,8 +173,10 @@ class App < Sinatra::Base
     if @account.valid_request?(request)
       @authentication = Authentication.create!(account: @account, email: params[:email], redirect: params[:redirect_uri], state: params[:state])
       @authentication.deliver!
+      @account.track 'Authentication Created', email: params[:email]
       erb :login, layout: :bare
     else
+      @account.track 'Validation Error', event: 'Authentication Created', detail: @authentication.status_message
       erb :failure, layout: :bare
     end
   end
@@ -156,8 +185,10 @@ class App < Sinatra::Base
     @authentication = Authentication.where(ref: params[:ref]).first
     
     if @authentication.consume!
+      @account.track 'Authentication Consumed', email: params[:email]
       redirect @authentication.redirect + "?payload=#{@authentication.payload}"
     else
+      @account.track 'Validation Error', event: 'Authentication Consumed', detail: @authentication.status_message
       erb :failure
     end
   end
@@ -166,20 +197,14 @@ class App < Sinatra::Base
     @authentication = Authentication.where(ref: params[:ref]).first
     @authentication.status!(:opened) if @authentication.try(:status) == 'sent'
     
+    @account.track 'Authentication Opened', email: params[:email]
     content_type 'image/gif'
     Base64.decode64 'R0lGODlhAQABAIABAP///wAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=='
   end
   
-  get '/__testrender' do
-    Account.master.authentications.new(email: 'test@example.com').message.html_body
-  end
-  
   get '/logout' do
+    track 'Logout'
     session.destroy
     redirect '/'
-  end
-  
-  post '/send' do
-    account = Account.from_request(request)
   end
 end

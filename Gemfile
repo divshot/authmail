@@ -12,6 +12,7 @@ gem 'sidekiq'
 gem 'actionpack', require: false
 gem 'stripe'
 gem 'erubis'
+gem 'mixpanel-ruby'
 
 gem 'puma'
 gem 'racksh'

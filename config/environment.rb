@@ -12,6 +12,8 @@ $logger = Logger.new($stdout)
 
 Stripe.api_key = ENV['STRIPE_SECRET']
 
+$mp = Mixpanel::Tracker.new(ENV['MIXPANEL_API_TOKEN'])
+
 unless ENV['RACK_ENV'] == 'production'
   require 'sidekiq/testing'
   Sidekiq::Testing.inline!
