@@ -49,7 +49,7 @@ class Message
   def deliver!
     Pony.mail({
       to: authentication.email,
-      from: 'AuthMail <login@authmail.co>',
+      from: '#{account.name} <login@authmail.co>',
       reply_to: account.reply_to?? account.reply_to : "#{account.name} <login@authmail.co>",
       subject: "Your login link for #{account.name}",
       body: text_body,
