@@ -44,11 +44,11 @@
     </div>
   </div>
   
-  <p>Oh yeah, did we mention that AuthMail is <a href="https://github.com/divshot/authmail" target="_blank">100% open source</a>?</p>
+  <p class='home-oss'>Oh yeah, and did we mention that AuthMail is <a href="https://github.com/divshot/authmail" target="_blank">100% open source</a>?</p>
   
 </div>
 
 <script>
   mixpanel.track('Viewed Lander');
-  mixpanel.track_forms('#signup-form', 'Initiated Signup');
+  mixpanel.track_forms('#signup-form', 'Initiated Login', {location: 'Lander'});
 </script>

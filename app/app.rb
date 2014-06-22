@@ -53,6 +53,7 @@ class App < Sinatra::Base
     if current_user || authenticate!
       redirect '/dashboard'
     else
+      @skip_header = true
       erb :home
     end
   end

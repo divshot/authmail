@@ -18,7 +18,7 @@
     <%== erb :mixpanel %>
   </head>
   <body>
-    <% if current_user %><%== erb :nav %><% end %>
+    <%== erb :nav %>
     <div class="container">
       <% if @error %><div class="alert alert-danger"><%== @error %></div><% end %>
       <%== yield %>
