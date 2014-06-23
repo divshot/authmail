@@ -33,6 +33,8 @@ GEM
       handlebars-source (~> 1.3.0)
       therubyracer (~> 0.12.0)
     handlebars-source (1.3.0)
+    honeybadger (1.13.2)
+      json
     i18n (0.6.9)
     json (1.8.1)
     jwt (1.0.0)
@@ -123,6 +125,7 @@ DEPENDENCIES
   erubis
   guard-rspec
   handlebars
+  honeybadger
   jwt
   mixpanel-ruby
   mongoid

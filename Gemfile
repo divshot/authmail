@@ -13,6 +13,7 @@ gem 'actionpack', require: false
 gem 'stripe'
 gem 'erubis'
 gem 'mixpanel-ruby'
+gem 'honeybadger'
 
 gem 'puma'
 gem 'racksh'
